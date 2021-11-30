@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META NAME="Author" CONTENT="Dmitry Lukyanov">
+	<META NAME="Keywords" CONTENT="dmitry lukyanov job pictures">
+	<META NAME="Description" CONTENT="Dmitry Lukyanov job pictures">
+	<TITLE>Job pictures</TITLE>
+	<link rel="stylesheet" type="text/css" href="master.css">
+	<script language="JavaScript">
+	<!--
+		var thisdoc="index.htm";
+		var aa=["../../",						"Control Panel",
+			"main_entrance.jpg",		"Main entrance",
+			"map.gif",					"Where it is?",
+			"our_office01.jpg",			"At the very beginning",
+			"our_office02.jpg",			"Our office (after repair)",
+			"window_view.jpg",			"Window view",
+			"my_work_place.jpg",		"My work place",
+			"our_server.jpg",			"Our Server",
+			"our_office03.jpg",			"Our office + Team",
+			"boss.jpg",					"Our Boss",
+			"technical_boss.jpg",		"Technical director",
+			"everest_2000_10_05.jpg",	"the 'Everest JSC' (2000-10-05)",
+			"dinner.jpg",				"The dinner",
+			"my_team_and_customer.jpg",	"Tatyana, Margaret, Dmitry"
+			];
+		function fillTo(src,newlen){
+			var l=newlen-src.length;
+			for(var i=0;i<l;i++)src+='&nbsp;';
+			return src;
+		}
+		function getParameter(name,defVal){
+			var from,l;
+			if(arguments.length==0){
+				alert("ERROR: parameter name is not defined in getParameter()");
+				return null;
+			}
+			if(arguments.length==1)defVal=null;
+			from=window.location.search.indexOf('?'+name);
+			if(from<0)from=window.location.search.indexOf('&'+name);
+			if(from>=0){
+				from+=name.length+2;
+				if(from==window.location.search.length)return defVal;
+				l=window.location.search.indexOf('&',from);
+				if(l<0){
+					return unescape(window.location.search.substr(from));
+				}else{
+					return unescape(window.location.search.substring(from,l));
+				}
+			}
+			return defVal;
+		}
+		function getIndex(s){
+			for(var i=0;i<aa.length;i+=2){
+				if(aa[i]==s)return i;
+			}
+			return -1;
+		}
+		var img=getParameter("img");
+		if(img==null)img=aa[2];
+		var imgId=getIndex(img);
+	//-->
+	</script>
+</HEAD>
+<BODY BGCOLOR="#FFFFEE" LINK="Navy" VLINK="Teal" ALINK="Blue">
+
+
+<TABLE cellspacing="0" cellpadding="2" border="0" width="100%">
+<TR>
+	<TD bgcolor="#ECD284" align="left" NOWRAP>
+	<center>Controls</center>
+	<hr>
+	<SCRIPT LANGUAGE="JavaScript">
+	<!--
+		//	address					description
+		var maxlen=0;
+		var space="                                                               ";
+
+		for(var i=0;i<aa.length;i+=2)if(aa[i+1].length>maxlen)maxlen=aa[i+1].length;
+		for(var i=0;i<aa.length;i+=2){
+			if(i==0){
+				document.write('<a href="'+aa[i]+'">&nbsp;'+fillTo(aa[i+1],maxlen)+'&nbsp;</a>');
+				document.writeln("<hr>");
+			}else{
+				document.write('<a href="'+thisdoc+'?img='+aa[i]+'">&nbsp;');
+				if(i==imgId)document.write('<font color="red">');
+				document.write(fillTo(aa[i+1],maxlen));
+				if(i==imgId)document.write('</font>');
+				document.write('&nbsp;</a>');
+				document.writeln("<br>");
+			}
+		}
+		document.writeln("<hr>");
+	//-->
+	</SCRIPT>
+	<br><br><br><br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br><br><br><br>
+	<font size="-3">designed by Dmitry Lukyanov</font>
+	</TD>
+	<TD width="100%" valign="top" align="Left">
+	<SCRIPT LANGUAGE="JavaScript">
+	<!--
+		if(img==null){
+		}else{
+			document.writeln('<B><font size="-1">&nbsp;&nbsp;&nbsp;'+aa[imgId+1]+'</font></B><br>');
+			if(imgId+2<aa.length)document.write('<a href="'+thisdoc+'?img='+aa[imgId+2]+'">')
+			document.write('<img border="0" src="'+img+'">');
+			if(imgId+2<aa.length)document.write('</a><br><font size="-3">click on the picture to view next</font>');
+		}
+	//-->
+	</SCRIPT>
+	</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

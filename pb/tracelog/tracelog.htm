@@ -1,0 +1,221 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1251">
+<title>Tracelog for PowerBuilder</title>
+<style type="text/css">
+.S1 {
+	font-family: 'Courier New';
+	color: #007F7F;
+	background: #FFFFFF;
+	font-size: 9pt;
+}
+.S2 {
+	color: #7F007F;
+	background: #E0F0F0;
+}
+.S3 {
+	color: #B06000;
+	background: #FFFFFF;
+}
+.S4 {
+	color: #000000;
+	background: #FFFFFF;
+}
+.S5 {
+	color: #00007F;
+	background: #FFFFFF;
+}
+span {
+	font-family: 'Courier New';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 9pt;
+}
+</style>
+</head>
+
+<body>
+
+
+<h1 align=center >TRACELOG for PowerBuilder application</h1>
+
+<h3>What is a tracelog?</h3>
+
+<p>The tracelog (n_trace) is a Powerbuilder object that allows:</p>
+
+<ul>
+<li>Catch <b>all</b> sql errors (with object name and line information)
+
+<li>Catch <b>print</b> messages from server
+
+<li>Organize debug logging for your applications (online, text file, html)
+</ul>
+
+
+<h3>Restrictions</h3>
+
+<p>Today only Sybase ASE and Microsoft SQL servers are supported.</p>
+
+<h3>Download</h3>
+<a href=tracelog.zip>tracelog.zip</a> ansi and unicode versions of the n_trace object, and tracelog.dll<br>
+<a href=test.sra>test.sra</a> an example application object that shows usage of the n_trace<br>
+<a href=test.zip>test.zip</a> workspace + target + PBL with test.sra example created with PowerBuilder9 <br>
+
+
+<h3>n_trace object prototype</h3>
+<ul>
+<li><span class="S2"><b>of_setTitle</b> (<i>string</i> s)</span><br>
+Sets the title of the Tracelog window, and the tooltip for the icon in the tray.<br>
+returns none.
+<li><span class="S2"><b>of_log</b> ( <i>string</i> as_object, <i>string</i> as_info, <i>long</i> al_mask)</span><br>
+Adds the message into a log.<br>
+<i>as_object</i> the object name that sends a message.<br>
+<i>as_info</i> the message test to add into the log.<br>
+<i>al_mask</i> the message type defined through msg_xxx members of n_trace.<br>
+
+<li><span class="S2"><b>of_log</b> (<i>powerobject</i> apo_object, <i>string</i> as_info, <i>long</i> al_mask)</span><br>
+The version of the  function with first parameter defined not as object name but as object itself.<br>
+
+<li><span class="S2"><b>of_dbHandlerSet</b> (<i>transaction</i> atr)</span><br>
+Installs the message/error handler for Sybase ASE (SYC) or Microsoft SQL (MSS) servers.<br>
+If you want to install message handler, you should do it after "connect" command.
+If the message came from the server it will be automatically added into the tracelog with "sql error" or "sql print" mask (type).<br>
+
+<li><span class="S2"><b>of_dbHandlerDel</b> (<i>transaction</i> atr)</span><br>
+Removes previously installed message/error handler. <br>
+Must be called before "disconnect" command.<br>
+
+<li><span class="S2"><b>of_debug</b> (<i>powerobject</i> obj, <i>string</i> s)</span><br>
+identical to call: n_trace.of_log( obj, s, n_trace.msg_debug )
+<li><span class="S2"><b>of_info</b> (<i>powerobject</i> obj, <i>string</i> s)</span><br>
+identical to call: n_trace.of_log( obj, s, n_trace.msg_info )
+
+<li><span class="S2">INSTANCE VARIABLES:</span><br>
+<span class="S5">privatewrite long</span> <span class="S4">msg_syserr &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 1</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S1">//sys error &nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_sqlerr &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 2</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S1">//sql error &nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_sqlprint &nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 4</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S1">//sql print &nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_sqlpreview </span><span class="S3">=</span><span class="S4"> 8</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S1">//sql preview </span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_procreturn </span><span class="S3">=</span><span class="S4"> 16</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S1">//proc return </span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_debug &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 32</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S1">//debug &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 64</span><span class="S0"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S1">//info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_create &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 128</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S1">//create &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_destroy &nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 256</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S1">//destroy &nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_open &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 512</span><span class="S0"> &nbsp;&nbsp;&nbsp;</span><span class="S1">//open &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 1024</span><span class="S0"> &nbsp;&nbsp;</span><span class="S1">//close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_click &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 2048</span><span class="S0"> &nbsp;&nbsp;</span><span class="S1">//click &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_dblclick &nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 4096</span><span class="S0"> &nbsp;&nbsp;</span><span class="S1">//dblclick &nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_keydown &nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 8192</span><span class="S0"> &nbsp;&nbsp;</span><span class="S1">//keydown &nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_keyup &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 16384</span><span class="S0"> &nbsp;</span><span class="S1">//keyup &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_message &nbsp;&nbsp;&nbsp;</span><span class="S3">=</span><span class="S4"> 32768</span><span class="S0"> &nbsp;</span><span class="S1">//message &nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S5">privatewrite long</span> <span class="S4">msg_datawindow </span><span class="S3">=</span><span class="S4"> 65536</span><span class="S0"> &nbsp;</span><span class="S1">//datawindow &nbsp;</span><br />
+</ul>
+
+
+
+<h3>Screenshots</h3>
+
+<p>To access the log you need just click on the icon in the tray:</p>
+
+<p><img src="./img/image001.png"></p>
+
+<p>You will see the log:</p>
+
+<p><img src="./img/image003.png"></p>
+
+<p>At any time during your application execution the developer able to 
+change the mask (types) of messages that he want to see in the log:</p>
+
+<p><img src="./img/image005.png"></p>
+
+<p>All messages from the start of application will be
+redisplayed according to the selected mask.</p>
+
+<p>To see the full message text, doubleclick on it or press "Enter":</p>
+
+<p><img src="./img/image007.png" ></p>
+
+<p>The log window is enabled; even you have a PowerBuilder
+system error or application crash. Of cause, If PB application was terminated,
+then tracelog will be terminated also, because it is the same process.</p>
+
+<h3>Trace Log Configuration</h3>
+
+<p>All configurations are stored in tracelog.ini file:</p>
+
+
+<span><span class="S2">[options]</span><br />
+<span class="S1">;create or not the tracelog window and tray icon</span><br />
+<span class="S1">;maybe the final application user should not see this log in his tray</span><br />
+debug<span class="S3">=</span>Y<br />
+<span class="S1">;this value you can set from the interface (tracelog window filter)</span><br />
+mask.debug<span class="S3">=</span>-1<br />
+<br />
+<span class="S1">;store info into text file with the specified mask:</span><br />
+<span class="S1">;0 means do not create file</span><br />
+<span class="S1">;log file will be created in "%USERPROFILE%\tracelog" directory</span><br />
+mask.file<span class="S3">=</span>0<br />
+<br />
+<br />
+<br />
+<br />
+<span class="S2">[tracelog.maskinfo]</span><br />
+<span class="S1">;here you can define mask information</span><br />
+<span class="S1">;format:</span><br />
+<span class="S1">; &nbsp;mask = X Display info</span><br />
+<span class="S1">; &nbsp;&nbsp;&nbsp;The "Display info" is limited to 29 symbols</span><br />
+<span class="S1">; &nbsp;and X defines icon :</span><br />
+<span class="S1">; &nbsp;&nbsp;&nbsp;e error icon</span><br />
+<span class="S1">; &nbsp;&nbsp;&nbsp;i information</span><br />
+<span class="S1">; &nbsp;&nbsp;&nbsp;w warning</span><br />
+<br />
+1 &nbsp;&nbsp;&nbsp;&nbsp;<span class="S3">=</span> e sys error<br />
+2 &nbsp;&nbsp;&nbsp;&nbsp;<span class="S3">=</span> e sql error<br />
+4 &nbsp;&nbsp;&nbsp;&nbsp;<span class="S3">=</span> i sql print<br />
+8 &nbsp;&nbsp;&nbsp;&nbsp;<span class="S3">=</span> i sql preview<br />
+16 &nbsp;&nbsp;&nbsp;<span class="S3">=</span> i proc return<br />
+32 &nbsp;&nbsp;&nbsp;<span class="S3">=</span> w debug<br />
+64 &nbsp;&nbsp;&nbsp;<span class="S3">=</span> i info<br />
+128 &nbsp;&nbsp;<span class="S3">=</span> i create<br />
+256 &nbsp;&nbsp;<span class="S3">=</span> i destroy<br />
+512 &nbsp;&nbsp;<span class="S3">=</span> i open<br />
+1024 &nbsp;<span class="S3">=</span> i close<br />
+2048 &nbsp;<span class="S3">=</span> i click<br />
+4096 &nbsp;<span class="S3">=</span> i dblclick<br />
+8192 &nbsp;<span class="S3">=</span> i keydown<br />
+16384 <span class="S3">=</span> i keyup<br />
+32768 <span class="S3">=</span> w message<br />
+65536 <span class="S3">=</span> i datawindow<br />
+131072<span class="S3">=</span> i dragdrop<br />
+<br />
+<br />
+<br />
+<span class="S1">;below you will find tracelog windows placement</span><br />
+<span class="S1">;automatically stored on application close</span><br />
+<span class="S2">[tracelog.w_main]</span><br />
+x<span class="S3">=</span>-2<br />
+y<span class="S3">=</span>558<br />
+w<span class="S3">=</span>1027<br />
+h<span class="S3">=</span>183<br />
+<br />
+<span class="S2">[tracelog.listview]</span><br />
+col0<span class="S3">=</span>90<br />
+col1<span class="S3">=</span>90<br />
+col2<span class="S3">=</span>232<br />
+col3<span class="S3">=</span>588<br />
+<br />
+<span class="S2">[tracelog.w_detail]</span><br />
+x<span class="S3">=</span>0<br />
+y<span class="S3">=</span>0<br />
+w<span class="S3">=</span>564<br />
+h<span class="S3">=</span>454<br />
+</span>
+<hr>
+<CENTER>
+	<A HREF="#TOP">top</A> | 
+	<A HREF="../../index.htm">control panel</A>
+</CENTER>
+
+</body>
+
+</html>

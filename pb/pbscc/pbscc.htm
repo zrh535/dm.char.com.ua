@@ -1,0 +1,218 @@
+<html>
+
+<head>
+	<meta http-equiv=Content-Type content="text/html; charset=windows-1251">
+	<META NAME="GENERATOR" CONTENT="Dmitry Lukyanov">
+	<META NAME="Author" CONTENT="Dmitry Lukyanov">
+	<META NAME="description" CONTENT="SVN for PowerBuilder 8, 9, 10">
+	<META NAME="keywords" CONTENT="svn powerbuilder sybase ms scc msscc interface pbscc proxy">
+	<TITLE>PBSCC Proxy</TITLE>
+	<STYLE>
+		code { 
+			font-family: Courier new,Courier;
+			font-size: 9pt;
+			color: Blue;
+		}
+	</STYLE>
+</HEAD>
+
+<body>
+
+<h1>SVN for PowerBuilder 8.x, 9.x, 10.x and upper</h1>
+<hr>
+<h2><font color=red>Note: project has been moved to <a href="http://code.google.com/p/pbscc-proxy/">code.google.com/p/pbscc-proxy/</a></font></h2>
+
+<hr>
+<br>
+<h2>How to install it?</h2>
+You have to install the following software on client computer:<br>
+
+<ol>
+ <li><a href="http://tortoisesvn.tigris.org">TortoiseSVN (visual SVN interface for windows)</a></li>
+ <li><a href="http://subversion.tigris.org">Subversion (console SVN applications)</a></li>
+ <li><a href="http://code.google.com/p/pbscc-proxy/downloads/list">PBSCC-Proxy last featured version</a>
+</ol>
+<br>
+<hr>
+The SccProxy prompts to be installed into the same directory as TortoiseSVN . <br>
+
+<h2>What's new?</h2>
+
+<ul>
+ <li><b>2010-02-27</b> Corrected bug whel special sumbols used in comment (like double quote).
+ </li>
+ <li><b>2009-08-01</b> Added parameter into registry <i>cache.ttl.seconds</i> that defines cache time to live in seconds<br>
+ The environment variable LC_MESSAGES used only for subversion sessions and not for whole PB session.<br>
+ Removed deprecated functionality : DDB.
+ </li>
+ <li><b>2008-06-22</b> Removed conflict between several PB instances while opening pipe to svn<br>
+ Removed a bug when PB hangs while executing svn.
+ </li>
+ <li><b>2007-06-04</b> Just set flag noDDB=1 in installation by default</li>
+ <li><b>2007-05-31</b> Changed LANG variable to LC_MESSAGES to avoid conflict with Sybase client.</li>
+ <li><b>2007-03-20</b> On initialization, set the LANG local environment variable to "en_US" to support localized svn version (normally, after that SVN speaking english in the session of PBSCC).</li>
+ <li><b>2007-02-17</b> Support of the SVN version 1.4.x.<br>
+  New registry key "checkout.lock". If set to 1 then the object will be locked in addition to the property lock method.
+ </li>
+ 
+ <li><b>2006-12-03</b> New: one operation for several objects and additional error logging.</li>
+ <li><b>2006-04-26</b> you can specify svn work directory through registry ( ".svn" or "_svn" ).</li>
+ <li><b>2006-04-06</b> corrected a bug with TEMP environment variable. Great thanks to Stephan Glehn. Shame on me.</li>
+ <li><b>2006-03-23</b> _popen function not used any more because it could work incorrectly in non console applications.</li>
+ <li><b>2005-12-03</b> Removed double comment request. Commit error log is redirected to PB.</li>
+ <li><b>2005-05-17</b> Added information about conflict during svn update.</li>
+ <li><b>2005-05-16</b> PBSCC Proxy published.</li>
+</ul>
+
+<br>
+<h2>Any problems?</h2>
+Use <a href="http://code.google.com/p/pbscc-proxy/issues/list">Issue tracking</a>
+<h2>Questions?</h2>
+Use <a href="http://groups.google.com/group/pbscc">PBSCC discussion group</a>
+
+<h2>PBSCC + TortoiseSVN Quick start reference.</h2>
+<ul>
+ <li><a href="qstart.htm">PBSCC + TortoiseSVN Quick start reference.</a>
+</ul>
+
+<h2>How to start subversion service under windows XP</h2>
+<ul>
+ <li><a href="svnsvc.htm">Simple subversion service under windows.</a>
+</ul>
+
+<h2>PbSccProxy in real project</h2>
+<ul>
+ <li>The <a href="http://code.google.com/p/aseisql/">ASE ISQL</a> is a PowerBuilder open-source project that uses the following tools to manage sources:
+	<ul>
+	 <li>PbSccProxy to work with subversion repository from PowerBuilder.
+	 <li><a href="http://dm.char.com.ua/pb/pborca.htm">PBORCA</a> to build PowerBuilder libraries and executable from sources. So you don't need to store PBL's.
+	 
+	 
+	</ul>
+ 
+</ul>
+
+<h2>Known problems:</h2>
+<ul>
+<li>To work with console applications (svn.exe) and to avoid console blinking, 
+proxy creates console on library initialization. Sometimes (I don't know why) you could see it, but it quickly disappears.
+
+<li>Today proxy has a simple parser of ".svn\entries" file. And if tomorrow format will be changed then proxy will not work.
+<li>PowerBuilder limits SCC CheckIn command to 25 objects.</li>
+
+<ul><li><b>Solution:</b> PowerBuilder uses an array of object file names that it passes to a source
+control system in each of its SCC API requests. The SCC specification does not
+mention an upper limit to the number of files that can be passed in each request,
+but the default implementation in PowerBuilder limits SCC server requests to
+batches of 25 objects.<br>
+A PB.INI file setting allows you to override the 25-file limit on file names sent
+to the source control server in a batched request. <br> 
+You can make this change in the <code>[Library]</code> section of the PB.INI file by adding the following instruction:<br>
+<code>SccMaxArraySize=nn</code><br>
+where nn is the number of files you want PowerBuilder to include in its SCC
+API batch calls. Like other settings in the PB.INI file, the SccMaxArraySize
+parameter is not case sensitive.</li></ul>
+
+<li>In PowerBuilder 11 the <code>CheckOut</code> operation could be disabled when object 
+just released (<code>CheckIn</code> or <code>Undo CheckOut</code>) by other user. <br>
+This is because PbSccProxy uses local cache for 1 minute (3 min in old versions) instead of requesting real status from svn. <br>
+Now you can customize this value through registry <i>cache.ttl.seconds</i> value.<br>
+Also you can foce PbSccProxy to request real statuses from svn by using <code>Get Latest Version</code> on required library or target.
+</li>
+
+</ul>
+
+
+
+<br>
+<br>
+<h2>Svn work directory:</h2>
+If you are using a special version of SVN with work directory named <b>"_svn"</b> instead of <b>".svn"</b><br>
+then you must do the following modification of registry:<br>
+<img src="img/image000.gif"><br>
+
+<br>
+
+
+<h2>Configuration of PB:</h2>
+
+<img src="img/image001.png"><br>
+
+<br>
+
+The field <b>User ID </b>helps to determine current user.
+This value used nowhere in process except to check if object was checked out by
+you or by another user. So you can change this value to edit object checked out
+by another user.
+<br>
+<br>
+The <b>Project</b> field should contain the folder where you
+have made "<b>SVN Check Out</b>" operation:
+
+<img src="img/image003.png" ><br>
+
+<br>
+
+<b>Local Root Directory</b> is a folder of your PB workspace.<br>
+
+<br>
+
+As you can see my project contains two subfolders. You must manually create all subfolders of your project in SVN (if you have some).
+
+<br>
+
+The <b>Project</b> folder must be always in status 
+<b>normal</b> <img width=12 height=12 src="img/image005.gif" > when you are going to work with PB. </p>
+
+<br>
+
+<br>
+
+<h2>How it works:</h2>
+
+<br>
+
+Today SVN supports native object locking, but this information is stored on server only and not cached in local copy.<br>
+That's why I'm emulating locking using SVN properties feature. Properties are cached in the local copy<br>
+
+<img src="img/image007.png"><br>
+
+This means that testscc.pbt is locked by the user dmluinfo2id.<br>
+
+<br>
+
+To increase speed, <b>SCC Proxy</b> creates <b>cache</b> folder in the svn work directory:<br>
+
+<img src="img/image009.png" ><br>
+
+<img src="img/image011.png"><br>
+
+<br>
+
+Each file contains just two lines: revision number and value of lockby property.<br>
+
+<img src="img/image013.png" ><br>
+
+<br>
+<h2>If you have any problems:</h2>
+
+Use google group <a href="http://groups.google.com/group/pbscc">http://groups.google.com/group/pbscc</a>
+or mail at <a href="mailto:pbscc@googlegroups.com">pbscc@googlegroups.com</a>.<br>
+To enable debug logging, please spesify a full path in the registry:<br>
+<img src="img/image014.png"><br>
+All svn commands will be logged into this file.<br>
+So you can repeat them from the command shell and see where the problem appears.<br><br>
+Also the file "%TEMP%\pbscc.err" created during "svn update" command.<br>
+You can check it to see if you have some specific problems.<br>
+<br>
+<br>
+<HR>
+
+<CENTER>
+	<A HREF="#TOP">top</A> | 
+	<A HREF="../../index.htm">control panel</A>
+</CENTER>
+
+</body>
+
+</html>

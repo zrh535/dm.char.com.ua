@@ -1,0 +1,257 @@
+<html>
+<head>
+	<STYLE>
+	    .oper { 
+			font-family: Courier;
+			font-weight: bold;
+			color: Red;
+		}
+	    .common { 
+			font-family: Courier;
+			color: Blue;
+		}
+	    .sys { 
+			font-family: Courier;
+			font-weight: bold;
+			color: Maroon;
+		}
+	    .display { 
+			font-family: Courier;
+		}
+	</STYLE>
+	<SCRIPT>
+	<!--
+	var AX=0.0;
+	var BX=0.0;
+
+	//You can modify the length of this value
+	// to change the width of input field
+	var disp0='                         0';
+
+	var disp=disp0;
+	var op='';
+	//Flags:
+	var fOp=false;
+	var fEdit=false;
+	var fCalc=false;
+	var fError=false;
+	
+	function writeDisplay(){
+		document.write('<INPUT NAME="display" TYPE="Text" VALUE="');
+		document.write(disp0);
+		document.writeln('" onChange="Display()" READONLY ALIGN="right" SIZE="'+disp0.length+',1" MAXLENGTH="'+disp0.length+'" CLASS=display>');
+	};
+
+	function toFloat(s){
+		var a=parseFloat(s.substr(1));
+		if(s.charAt(0)=='-')a=0-a;
+		return a;
+	}
+
+	function Format(n){
+		var sign=' ';
+		var rez=String(n);
+		if(rez.length>disp0.length){
+			rez="Overflow";
+		}else{
+			if(rez.charAt(0)=='-'){
+				sign='-';
+				rez=rez.substr(1);
+			}
+			while(disp0.length>1+rez.length)rez=' '+rez;
+			rez=sign+rez;
+		}
+		return rez;
+	}
+
+	function myClearAll(){
+		AX=0.0;
+		BX=0.0;
+		disp=disp0;
+		op='';
+		//clear flags
+		fOp=false;
+		fEdit=false;
+		fCalc=false;
+		fError=false;
+		//display
+		Display();
+	}
+
+	function myBackspace(){
+		if(fError){myClearAll();return;}
+		if( fOp || fCalc || disp.charAt(disp.length-2)==' ' ){
+			disp=disp0;
+			Display();
+		}else if( (disp.charAt(1) ==' ') ){
+			var sign=disp.charAt(0);
+			var val=disp.substr(1,disp.length-2);
+			disp=sign+' '+val;
+			Display();
+		}
+		//set edit flag
+		fOp=false;
+		fEdit=true;
+		fCalc=false;
+	}
+
+	function Display(){
+		document.forms[0].display.value=disp;
+	}
+
+	//Edit functions:
+	function Number(n){
+		if(fError)return;
+		if( fOp || fCalc )disp=disp0;
+		if( disp.charAt(disp.length-1)=='0' && disp.charAt(disp.length-2)==' ' ){
+			disp=disp.charAt(0)+disp0.substr(1,disp0.length-2)+n;
+			Display();
+		}else if( (disp.charAt(1) ==' ') ){
+			var a=disp.charAt(0);
+			var b=disp.substr(2);
+			disp=a+b+n;
+			Display();
+		}
+		//set edit flag
+		fOp=false;
+		fEdit=true;
+		fCalc=false;
+	}
+	function Dot(){
+		if( disp.indexOf('.')<0 ){
+			Number('.');
+		}
+	}
+	function uOperation(){
+		if(fError)return;
+		if( fOp || fCalc )disp=disp0;
+		if( disp.charAt(0)=='-' ){
+			disp=' '+disp.substr(1);
+		}else{
+			disp='-'+disp.substr(1);
+		}
+		Display();
+		fOp=false;
+		fEdit=true;
+		fCalc=false;
+	}
+
+	//Calculate functions:
+	function Operation(o){
+		if(fError)return;
+		if(fOp || fCalc){
+			op=''+o;
+		}else{
+			Calculate();
+			AX=toFloat(disp);
+			op=''+o;
+		}
+		fOp=true;
+		fEdit=false;
+		fCalc=false;
+	}
+
+	function Calculate(){
+		if(fError)return;
+		if(op=='')return;
+		if (!fCalc)BX=toFloat(disp);
+		if(op=='*'){
+			AX=AX*BX;
+		}else if(op=='/'){
+			AX=AX/BX;
+		}else if(op=='+'){
+			AX=AX+BX;
+		}else if(op=='-'){
+			AX=AX-BX;
+		}
+		if(!isFinite(AX))fError=true;
+		disp=Format(AX);
+		if(disp==''){
+			fError=true;
+			disp='Overflow';
+		}
+		Display();
+
+		fOp=false;
+		fEdit=false;
+		fCalc=true;
+	}
+	//-->
+	</SCRIPT>
+	<title>JS Calculator</title>
+</head>
+<BODY BGCOLOR="#f6f5e3" TEXT="#000000" LINK="Blue" ALINK="Red" VLINK="Teal" >
+<center>
+
+<FORM>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" BGCOLOR="Silver">
+<TR><TD>
+
+<TABLE BORDER="1" BGCOLOR="Silver">
+<TR BGCOLOR="Navy"><TD>
+<FONT SIZE="-1" COLOR="White"><b>JavaScript Calculator</b></FONT>
+</TD></TR>
+<TR><TD ALIGN="Right">
+<center>
+<SCRIPT>
+	<!--
+	writeDisplay();
+	//-->
+</SCRIPT>
+</center>
+<INPUT NAME="Back" TYPE="Button" VALUE="Backspace" onClick="myBackspace()" CLASS=sys>
+<INPUT NAME="Clear" TYPE="Button" VALUE=" C " onClick="myClearAll()" CLASS=sys>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="1" BGCOLOR="Silver">
+<tr>
+</tr>
+<TR>
+	<TD><INPUT NAME="b7" TYPE="Button" VALUE=" 7 " onClick="Number(7)" CLASS=common></TD>
+	<TD><INPUT NAME="b8" TYPE="Button" VALUE=" 8 " onClick="Number(8)" CLASS=common></TD>
+	<TD><INPUT NAME="b9" TYPE="Button" VALUE=" 9 " onClick="Number(9)" CLASS=common></TD>
+	<TD>&nbsp;&nbsp;<INPUT NAME="bdivide" TYPE="Button" VALUE=" / " onClick="Operation('/')" CLASS=oper></TD>
+	<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR>
+	<TD><INPUT NAME="b4" TYPE="Button" VALUE=" 4 " onClick="Number(4)" CLASS=common></TD>
+	<TD><INPUT NAME="b5" TYPE="Button" VALUE=" 5 " onClick="Number(5)" CLASS=common></TD>
+	<TD><INPUT NAME="b6" TYPE="Button" VALUE=" 6 " onClick="Number(6)" CLASS=common></TD>
+	<TD>&nbsp;&nbsp;<INPUT NAME="bmultiply" TYPE="Button" VALUE=" * " onClick="Operation('*')" CLASS=oper></TD>
+	<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR>
+	<TD><INPUT NAME="b1" TYPE="Button" VALUE=" 1 " onClick="Number(1)" CLASS=common></TD>
+	<TD><INPUT NAME="b2" TYPE="Button" VALUE=" 2 " onClick="Number(2)" CLASS=common></TD>
+	<TD><INPUT NAME="b3" TYPE="Button" VALUE=" 3 " onClick="Number(3)" CLASS=common></TD>
+	<TD>&nbsp;&nbsp;<INPUT NAME="bminus" TYPE="Button" VALUE=" - " onClick="Operation('-')" CLASS=oper></TD>
+	<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR>
+	<TD><INPUT NAME="b0" TYPE="Button" VALUE=" 0 " onClick="Number(0)" CLASS=common></TD>
+	<TD><INPUT NAME="bsign" TYPE="Button" VALUE="+/-" onClick="uOperation()" CLASS=common></TD>
+	<TD><INPUT NAME="bdot" TYPE="Button" VALUE=" . " onClick="Dot()" CLASS=common></TD>
+	<TD>&nbsp;&nbsp;<INPUT NAME="bplus" TYPE="Button" VALUE=" + " onClick="Operation('+')" CLASS=oper></TD>
+	<TD>&nbsp;&nbsp;<INPUT NAME="benter" TYPE="Button" VALUE=" = " onClick="Calculate()" CLASS=oper></TD>
+</TR>
+</TABLE>
+
+</TD></TR>
+<TR><TD align="Right">
+<font size="-1">copyright by <a href="mailto:dlukyanov@ukr.net">Dmitry Lukyanov</a></font><br>
+</TD></TR>
+</TABLE>
+</TD></TR>
+</TABLE>
+
+</FORM>
+
+
+<br><br><br><br><br><br><br><br>
+
+<A HREF="index.htm">control panel</A>
+</center>
+
+
+</body>
+</html>

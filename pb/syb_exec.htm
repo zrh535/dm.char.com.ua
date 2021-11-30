@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+   <META NAME="GENERATOR" CONTENT="Dmitry Lukyanov">
+   <META NAME="Author" CONTENT="Dmitry Lukyanov">
+   <META NAME="description" CONTENT="The component for PB that allows you to execute SQL for Sybase ASE and get the resultset(s) with column names">
+   <META NAME="keywords" CONTENT="powerbuilder component execute sql sybase ASE resultset column field name">
+   <TITLE>PowerBuilder syb_exec</TITLE>
+</HEAD>
+<BODY BGCOLOR="#f6f5e3" TEXT="#000000" LINK="Blue" ALINK="Red" VLINK="Teal">
+
+<IMG ALIGN="Left" SRC="../images/hacker.gif" BORDER=0>
+
+<CENTER><B><FONT SIZE=+1>PowerBuilder syb_exec</FONT></B></CENTER>
+
+<hr>
+<p>
+download: <a href="syb_exec.rar">syb_exec.rar</a>
+<p>
+
+<font color=green>
+<pre>
+This library created for executing sql command(s) for Sybase ASE database.
+
+It was created because PowerBuilder does not give ability to get resultset(s)
+column description after sql execution.
+
+syb_exec.dll exports the following functions:
+
+int sql_directory(HWND hwnd);
+int sql_execute(CS_CONNECTION *connection,char * sql_command,HWND hwnd);
+
+
+------------------------------------------------------------------------------
+--                       FUNCTION sql_directory                             --
+------------------------------------------------------------------------------
+It requests from sybase client server names that currently registered.
+
+Use the following declaration of external function in PowerBuilder:
+
+function long sql_directory(long hwnd) LIBRARY "syb_exec.dll"
+
+To call this function from PowerBuilder:
+
+res=sql_directory(Handle(w_connect))
+where:
+- w_connect is a window that will process events to receive server names
+
+Returns:
+This function returns 1 if succeed.
+
+Description:
+It sends the following messages to hwnd window:
+
+name          windows id  powerbuilder id  description
+------------  ----------  ---------------  -----------------------
+ue_message    WM_USER+3   pbm_custom04     info and error messages
+ue_syb_dir    WM_USER+4   pbm_custom05     server name
+------------  ----------  ---------------  -----------------------
+
+------------------------------------------------------------------------------
+--                            EVENT ue_message                              --
+------------------------------------------------------------------------------
+see FUNCTION sql_execute
+
+------------------------------------------------------------------------------
+--                            EVENT ue_syb_dir                              --
+------------------------------------------------------------------------------
+Occurs on next server name income.
+
+ue_syb_dir(long wparam, long lparam)
+Parameters:
+wparam  not used.
+lparam  a string that contains a server name.
+        to obtain a string value from lparam address of the string use:
+        if lparam<>0 then s=String(lparam,"address")
+
+
+
+------------------------------------------------------------------------------
+--                       FUNCTION sql_execute                               --
+------------------------------------------------------------------------------
+It executes sql_command as CS_LANG_CMD and receives all resultsets including 
+output parameters and return value from stored procedure.
+
+Use the following declaration of external function in PowerBuilder:
+
+function long sql_execute(long DBHandle,ref string sql, long hwnd) LIBRARY "syb_exec.dll"
+
+
+To call this function from PowerBuilder:
+
+res=sql_execute(sqlca.DBHandle(),sql_query,Handle(w_main))
+where:
+- sqlca is connected to Sybase ASE (probably it works with MS SQL).
+- sql_query is a string variable that contains query to execute
+- w_main ia a window that will process all events to receive resultset(s)
+
+Returns:
+This function returns 1 if succeed.
+
+Description:
+It sends the following messages to hwnd window:
+
+name          windows id  powerbuilder id  description
+------------  ----------  ---------------  -----------------------
+ue_resultset  WM_USER+0   pbm_custom01     new resultset
+ue_newrow     WM_USER+1   pbm_custom02     new row
+ue_setfield   WM_USER+2   pbm_custom03     set field data
+ue_message    WM_USER+3   pbm_custom04     info and error messages
+ue_sqlerror   WM_USER+5   pbm_custom06     server sql error messages
+------------  ----------  ---------------  -----------------------
+
+
+------------------------------------------------------------------------------
+--                         EVENT ue_resultset                               --
+------------------------------------------------------------------------------
+Occurs on a new resultset income
+
+ue_resultset(long wparam, long lparam)
+Parameters:
+wparam  resultset type
+        0 - resultset data
+        1 - procedure return
+        2 - procedure output parameters
+lparam  resultset column count
+
+
+------------------------------------------------------------------------------
+--                           EVENT ue_newrow                                --
+------------------------------------------------------------------------------
+Occurs on new data row income (not header)
+
+ue_newrow(long wparam, long lparam)
+Parameters:
+wparam  the number of the new row
+lparam  not used
+
+
+------------------------------------------------------------------------------
+--                           EVENT ue_setfield                              --
+------------------------------------------------------------------------------
+Occurs for every field of resultset or for every column name.
+If this event occured before ue_newrow then it contains a column header 
+information in format: "int_col_width:col_name", in other case it contains 
+column data.
+
+ue_setfield(long wparam, long lparam)
+Parameters:
+wparam  column number
+lparam  string that contains column data or column header information
+        to obtain a string value from lparam address of the string use:
+        if lparam<>0 then s=String(lparam,"address")
+
+
+------------------------------------------------------------------------------
+--                            EVENT ue_message                              --
+------------------------------------------------------------------------------
+Occurs on debug or error message income. You do not need to process a debug 
+message. They are just for debugging. But if the error message is income - it 
+means that the execution error occurs and this message - an sql server message.
+
+ue_message(long wparam, long lparam)
+Parameters:
+wparam  message type:
+        0 - information/debug message
+        1 - error message
+lparam  a string that contains a message.
+        to obtain a string value from lparam address of the string use:
+        if lparam<>0 then s=String(lparam,"address")
+
+
+------------------------------------------------------------------------------
+--                            EVENT ue_sqlerror                             --
+------------------------------------------------------------------------------
+Occurs on sql error message income. It repeats the ue_message(1,msg) event but 
+also contains the error number in wparam.
+
+ue_message((unsigned long)long wparam, (string)long lparam)
+Parameters:
+wparam  sql server error number
+lparam  a string that contains a message.
+        to obtain a string value from lparam address of the string use:
+        if lparam<>0 then s=String(lparam,"address")
+
+
+</pre>
+</font>
+<hr>
+<b>
+Here you can find a part of code for the syb_exec.dll.<br>
+It gives you en example how to use transaction.DbHandle() in external libraries.
+</b>
+<font color=navy>
+<pre>
+int __stdcall sql_execute(CS_CONNECTION	*connection,char * query,HWND hwnd){
+	CS_RETCODE		retcode;
+	CS_COMMAND		*cmd;
+	DBG(flog = fopen("syb_exec.log","w"));
+	DBG(fprintf(flog,"sql_execute enter\n"));
+	if(!connection)return 0;
+	public_hwnd=hwnd;
+	retcode=ct_cmd_alloc(connection, &cmd);
+	if ( retcode==CS_SUCCEED ){
+		install_message_callback(hwnd,cmd);
+		retcode=_sql_execute(hwnd,cmd,query);
+		return_message_callback(hwnd,cmd);
+		ct_cmd_drop(cmd);
+	}else{
+		ERR(hwnd,"sql_execute: ct_cmd_alloc() failed");
+	}
+	DBG(fprintf(flog,"sql_execute exit\n"));
+	DBG(fflush(flog));
+	DBG(fclose(flog));
+	return (retcode == CS_SUCCEED) ? 1 : 0;
+}
+</pre>
+</font>
+<hr>
+
+<p>
+Freeware. Copyright by Dmitry Lukyanov
+<HR>
+
+<CENTER>
+	<A HREF="#TOP">top</A> | 
+	<A HREF="../index.htm">control panel</A>
+</CENTER>
+
+</BODY>
+</HTML>
+
+
+

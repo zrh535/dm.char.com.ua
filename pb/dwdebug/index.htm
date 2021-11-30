@@ -1,0 +1,56 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+   <META NAME="GENERATOR" CONTENT="Dmitry Lukyanov">
+   <META NAME="Author" CONTENT="Dmitry Lukyanov">
+   <META NAME="description" CONTENT="PowerBuilder Runtime Datawindow Info">
+   <META NAME="keywords" CONTENT="powerbuilder datawindow runtime debug data information">
+   <TITLE>PowerBuilder Datawindow Debug information</TITLE>
+</HEAD>
+<BODY BGCOLOR="#f6f5e3" TEXT="#000000" LINK="Blue" ALINK="Red" VLINK="Teal">
+
+<IMG ALIGN="Left" SRC="../../images/hacker.gif" BORDER=0>
+
+<CENTER><B><FONT SIZE=+1>PowerBuilder Datawindow Debug information</FONT></B></CENTER>
+
+<hr>
+You can integrate this easy to use window in your application in order to see and modify at any time information in datawindow.
+
+<center><img src="dwdebug1.gif"><br><img src="dwdebug2.gif"></center>
+
+<p>
+<a href="dwdebug.zip">dwdebug.zip</a>
+<p>
+This package contains two objects:<br>
+d_debug_datawindow_param.srd<br>
+w_debug_datawindow.srw<br>
+<br>
+How to use <b>w_debug_datawindow</b>:<br>
+on rbuttondown event in your basic datawindow add the following script:
+<font color=green>
+<pre>if KeyDown(KeyControl!) and KeyDown(KeyAlt!) then
+	OpenWithParm(w_debug_datawindow,this)
+	return 1
+end if
+</pre>
+</font>
+<br>
+that means that you can open datawindow debug window with Ctrl+Shift+RightClick
+
+
+<br>
+
+
+
+
+<p>
+Copyright by Dmitry Lukyanov
+<HR>
+
+<CENTER>
+	<A HREF="#TOP">top</A> | 
+	<A HREF="../../index.htm">control panel</A>
+</CENTER>
+
+</BODY>
+</HTML>

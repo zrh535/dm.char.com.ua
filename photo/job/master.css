@@ -1,0 +1,35 @@
+
+a:link {
+	font-family: Courier new,Courier;
+	font-size: 9pt;
+	font-style: normal;
+	text-decoration: none;
+	color: Navy;
+}
+a:visited {
+	font-family: Courier new,Courier;
+	font-size: 9pt;
+	font-style: normal;
+	text-decoration: none;
+	color: Navy;
+}
+a:hover {
+	font-family: Courier new,Courier;
+	font-size: 9pt;
+	font-style: normal;
+	text-decoration: none;
+	color: White;
+	background: #996600;
+}
+body { 
+	font-family: Courier new,Courier;
+	font-size: 9pt;
+	background: #ffffee;
+	color: #000000;
+}
+input {
+	font-family: Courier new,Courier;
+	font-size: 9pt;
+	font-style: normal;
+	text-decoration: none;
+}

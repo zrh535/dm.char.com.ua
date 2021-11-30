@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+   <META NAME="GENERATOR" CONTENT="Dmitry Lukyanov">
+   <META NAME="Author" CONTENT="Dmitry Lukyanov">
+   <META NAME="description" CONTENT="PowerBuilder PictureButton masking under windows 32">
+   <META NAME="keywords" CONTENT="powerbuilder picturebutton mask button background color">
+   <TITLE>PowerBuilder picturebutton masking under windows 32</TITLE>
+</HEAD>
+<BODY BGCOLOR="#f6f5e3" TEXT="#000000" LINK="Blue" ALINK="Red" VLINK="Teal">
+
+<IMG ALIGN="Left" SRC="../images/hacker.gif" BORDER=0>
+
+<CENTER><B><FONT SIZE=+1>PowerBuilder picturebutton masking under windows 32</FONT></B></CENTER>
+
+<hr>
+
+<table border=0 align=center>
+	<tr>
+		<td colspan=2>
+			
+		</td>
+	</tr>
+	<tr>
+		<td>
+			what we have
+		</td>
+		<td>
+			what we want
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<img src="nomask.gif">
+		</td>
+		<td>
+			<img src="mask.gif">
+		</td>
+	</tr>
+</table>
+
+<hr>
+<font color=maroon>In PowerBuilder version 7.0.3 build 10135 and higher this problem can be solved by  transparent GIF pictures.</font>
+<br>
+But if you still interested in it, here it is.
+<p>
+<B>Idea:</b>
+<p>
+The style of picture button in powerbuilder is BS_OWNERDRAW.
+The owner window or userobject receives a WM_MEASUREITEM message when the button is created 
+and a WM_DRAWITEM message when a visual aspect of the button has changed.
+<p>
+We can trigger WM_DRAWITEM event for the owner window (or userobject) to draw a
+picture button into our bitmap (not to the screen).
+<p>
+Now we can convert a bitmap to an icon, then change the style of the picturebutton 
+from BS_OWNERDRAW to BS_ICON, and set this icon to be displayed in our picturebutton.
+<p>
+We need an Icon to be sure that disabled icon will be shown in a right way.<br>
+<img src="pbm_dis.gif">
+<p>
+I found some limitation. It depends on operation system, video card, etc.
+The creation of large size icons will fail.
+I found this limitation for windows 98. The maximum size of the icon ~ 30000 points.
+300 x 100 pixels.
+
+
+<hr>
+Here is realization of this algorithm (not the best one, but workable).
+
+<p>
+<a href="n_picture_masker.sru">n_picture_masker.sru</a><br>
+This object is autoinstantiated so you don't need to create and destroy it.
+It have only two public methods:
+<pre>boolean f_SetMask(pictureObject) //converts usual picturebutton to icon button
+boolean f_Reset(pictureObject) //converts icon button back to picturebutton
+where pictureObject can be Picture or PictureButton</pre>
+<br>
+I think for better performance just declare it as shared variable in your custom picturebutton 
+and call f_SetMask(this) on constructor event and f_Reset(this) on destructor.
+<p>
+Copyright by Dmitry Lukyanov
+<HR>
+
+<CENTER>
+	<A HREF="#TOP">top</A> | 
+	<A HREF="../index.htm">control panel</A>
+</CENTER>
+
+</BODY>
+</HTML>

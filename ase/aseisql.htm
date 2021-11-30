@@ -1,0 +1,277 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+   <META NAME="Author" CONTENT="Dmitry Lukyanov">
+   <META NAME="description" CONTENT="ASE Isql: Sybase ASE isql (SQL Advantage replacement)+sqldbgr">
+   <META NAME="keywords" CONTENT="sqladvantage ase isql sybase sql advantage adaptive server enterprise 
+   debugger sqldbgr stored procedure альтернатива coloredit plugin trigger">
+   <TITLE>ASE Isql: Sybase ASE isql (SQL Advantage replacement)</TITLE>
+</HEAD>
+<BODY BGCOLOR="#f6f5e3" TEXT="#000000" LINK="Blue" ALINK="Red" VLINK="Teal">
+
+<IMG ALIGN="Left" SRC="../images/hacker.gif" BORDER=0>
+
+<CENTER><B><FONT SIZE=+1>ASE Isql: Sybase ASE isql (SQL Advantage replacement)</FONT></B></CENTER>
+
+<hr>
+
+Why? As for me, the <b>SQL Advantage</b> is not handy. So I decide to create my own <b>ASE Isql</b>.<br>
+
+<hr>
+<h2><font color=red>Note: project has been moved to <a href="http://code.google.com/p/aseisql/">code.google.com/p/aseisql</a></font></h2>
+
+<hr>
+<b>Features:</b><br>
+- Unicode support (UTF8)<br>
+- Marker management.<br>
+- Folding: expand/collapse BEGIN-END sections.<br>
+- SQL object context menu (like "Open procedure" if proc name is selected).<br>
+- Trigger support<br>
+- Now Sybase debugger (sqldbgr) integrated<br>
+- Read carefully <b>What's New</b> section because it's the only HELP document for this product.<br>
+
+<b>Screenshot:</b><br>
+<img src="aseisql.gif"><br>
+
+<B>Download :</B> 
+please visit the new project home <a href="http://code.google.com/p/aseisql/downloads/list?can=2&q=Type-Installer">downloads</a><br>
+
+<hr>
+
+
+<b>Known Issues</b>
+<ul>
+
+    <li> ASE ISQL will not connect to a Sybase database using the Sybase 15 client.<br>
+          o Workaround: In the Sybase 15 release, Sybase renamed libct.dll and libcs.dll to libsybct.dll and libsybcs.dll, respectively. Sybase has provided a batch command that will rename the files to pre-15 names. It's located in c:\sybase_client_install_folder\locs-15_0\scripts and the file name is copylibs.bat
+</ul>
+<br>
+<b>Future plans:</b><br>
+<ul>
+<li>Autocompletion with object/column names
+<li>Working on Resultsets in text mode...
+<li>SCC support for files.
+<li>still Thinking about workspace...
+</ul>
+
+
+<hr>
+<b>Whats New:</b><br>
+<ul>
+
+<li><b>2007-11-19</b><br>
+Corrected: comma was absent in Table DDL if more then one constraint.<br>
+<li><b>2007-11-01</b><br>
+Corrected "Tools\Export Data to SQL": Exported files contains zero char.<br>
+Corrected: Procedures saved from the database into a file, has no final "go".
+<li><b>2007-10-12</b><br>
+Corrected "Tools\Export Data to SQL" menu.<br>
+Added "Encrypt Password" connection parameter.
+<li><b>2007-10-02</b><br>
+New: Information tab-page on the connection screen. Displays sybase client version and environment information.<br>
+Bug corrected: re-execute menu has been disabled.<br>
+Removed calling of sp_server_info procedure.<br>
+
+<li><b>2007-09-13</b><br>
+New: menu "Tools\Export Data to SQL" that allows to export data from needed tables to sql insert statements (restriction: 32k per row data).<br>
+
+<li><b>2007-07-20</b><br>
+New: Find dialog now initiated with text selected in the editor.<br>
+New: "Find Selected" item added in the editor context menu.<br>
+New: "View - Show Spaces" menu item.<br>
+Bug corrected: Hangs if "Suicide process" used.<br>
+
+<li><b>2007-07-11</b><br>
+New: if "for browse" clause specified in the select, then resultset will be named by the name of the first table in "from" clause (I did not found other way to get table name for the resultset)<br>
+New: added "View Data top 100" menu item for tables, views, ...<br>
+<li><b>2007-06-15</b><br>
+Bug corrected: "View Process" sql absent in stubs.sql<br>
+New: Objects in browser displayed with owner name (to support not only dbo user).<br>
+New: Table DDL sql modified to support tables of different users (here could be some bugs).
+<li><b>2007-06-14</b><br>
+Moved query for "View Processes" menu to stubs.sql. Now you can customize it by overwriting it in ustubs.sql.<br>
+New: If ustubs.sql is located in the same directory AseIsqlSetup.exe then setup will use it during installation. This is to create common ustubs.sql for your company.
+<li><b>2007-06-11</b><br>
+New: It's possible to change format of DateTime data types from NATIVE to SQL (YYYY-MM-DD hh:mm:ss)<br>
+<li><b>2007-06-04</b><br>
+New: F5 key shortcut to reExecute query<br>
+New: Valid space sizes 3-12 (requested by SqlAdvantage users)<br>
+New: Copy templates and columns activated for views<br>
+<li><b>2007-05-11</b><br>
+New: parameter for tab size added<br>
+New: added two columns into "process view": physical_io, logged_in_datetime<br>
+<li><b>2007-04-19</b><br>
+Bug corrected: sp_showplan has been executed with wrong number of parameters<br>
+<li><b>2007-04-11</b><br>
+Bug corrected in index for table ddl generation (problem with unique,clustered)<br>
+Info: Stupid behavior of PB10: if during cursor execution there is a server warning incoming, then PB breaks the cursor each 100 fetches.<br>
+<li><b>2007-03-21</b><br>
+Extended history up to 26 items (englisg alphabet)<br>
+pbacc100.dll included into a delivery for "vista x64"<br>
+<li><b>2007-03-19</b><br>
+Corrected getting of the server names, so, now correctly working with LDAP.<br>
+Corrected retrieving of the time datatype (truncated before).<br>
+<li><b>2007-03-11</b><br>
+The key shortcut (ESC) for "canceling the resultset" and "reseting filter" appeared to be the same, so, now if you use filter, there is a small button appeared that resets the filter.<br>
+New option parameter "Font" for the resultset.<br>
+<li><b>2007-03-02</b><br>
+PB Code Problem: extremly slow string parsing algorithm now optimized, but it seems it's still slow and I have to rewrite it using C++...<br>
+<li><b>2007-02-27</b><br>
+Bug corrected: there was an error in command terminator parser. <font color=blue>"go"</font> inside comment block has been recognized as terminator.<br>
+<li><b>2007-01-25</b><br>
+Toolbar moving now enabled.<br>
+Added a new connection parameter "Hostname".<br>
+<li><b>2007-01-18</b><br>
+Bug corrected: the name of the stored procedure was not displayed in server messages (print or error).
+<li><b>2007-01-16</b><br>
+Bug corrected: when retrieving compute, resultset disappeared.
+
+<li><b>2007-01-13</b><br>
+Change the work with float and real datatypes. Not using <tt>cs_set_convert(ctx, CS_SET, CS_FLOAT_TYPE, CS_CHAR_TYPE,&ConvertFloat2Char)</tt> because in different versions of ctlib there are different bugs.<br>
+From now the display format for float and real is <tt>"%g.18"</tt><br>
+The SQL for "Kill Process" now moved to stubs.sql file. So you can override it by your own (for example <tt>execute sp_kill</tt> with special rights )
+
+<li><b>2006-12-18</b><br>
+Sybase 15.0 bug: with utf8 charset the query <tt>select colid,char_length(text),text from syscomments where id=object_id('...') <font color=maroon>ORDER BY colid2,colid</font></tt> returns wrong char_length for char fields ended with space. <font color=green>Removed ORDER BY to retrieve object text to avoid this bug.</font><br>
+<li><b>2006-12-04</b><br>
+corrected bug of sybase client: if we are connected to the unicode server with nonunicode charset, and there are some chars that could not be converted, sybase will not add null terminated char<br>
+<li><b>2006-11-28</b><br>
+corrected bug of powerbuilder: if charset=utf8 then old-version datawindows sometimes has strange message.<br>
+corrected resultset view for the nonstandard font size (120 and more DPI)<br>
+added Escape shortcut for resultset canceling.<br>
+<li><b>2006-11-23</b><br>
+Dll missing in the delivery (GdiPlus.dll)<br>
+Used English language for help compilation (before it was Russian).<br>
+<li><b>2006-11-20</b><br>
+Bug corrected: during file save as ansi used system charset instead of user charset (bug of PowerBuilder).<br>
+<li><b>2006-11-15</b><br>
+corrected debug for unicode version.<br>
+toolbar divided on two parts: common and database.
+<li><b>2006-11-03</b><br>
+New: UNICODE!!!. Finally. Editor is all the time in unicode. Conversion ANSI-Unicode-ANSI done during file and database operations.<br>
+New: Receive drag and drop files into editor.<br>
+New: Connection profiles.<br>
+<li><b>2006-07-01</b><br>
+New: sql datatype displayed in tooltip over column name<br>
+<li><b>2006-06-05</b><br>
+New: Highlighted database selection in the status bar... A lot of people can't find it <br>
+New: Added database selection in object browser<br>
+New: "Save" icon "greyed out" when editor is at the "save point".<br>
+Bug corrected: If a query is currently running, and you double-click the results-tab while it is still running, the
+program will crash.<br>
+
+Minor corrections
+<li><b>2006-05-26</b><br>
+Minor corrections
+<li><b>2006-04-11</b><br>
+New: Ctrl+New Session = Duplicate Session
+<li><b>2006-04-03</b><br>
+New: A test version of the workspace save/load.<br>
+New: Find in the resultset.<br>
+New: Cancel ALL resultsets support.<br>
+Coloring corrections.<br>
+<li><b>2006-02-06</b><br>
+New: On "Query" save, open saved file in a separated tab.<br>
+<li><b>2006-02-06</b><br>
+New: if Shift is pressed during open object (procedure, trigger), then it will be opened in background.<br>
+New: Ctrl+Space inserts the predefined construction from the Stubs (stubs.sql and ustubs.sql): <font color='gray'>type "select" or "cursor" in the editor and press Ctrl+Space</font><br>
+New: Ctrl+Click on the stored procedure or view opens this object<br>
+<li><b>2006-01-28</b><br>
+New: server information in the tooltip over server name in the status bar.<br>
+New: Current charset information in the statusbar (on servers under version 12.0 not updated after command execution).<br>
+New: now you can use meta characters of operator like in the object search.<br>
+New: you can use object filter instead of object search.<br>
+Changed shortcut for "Delete Line" to Ctrl+L<br>
+Ctrl+Y now used for Redo action<br>
+Added save ressources screen.<br>
+<li><b>2005-11-27</b><br>
+New: Sybase debugger (sqldbgr) integrated ... ( found some bugs in it. read help before using. )<br>
+New: Help (ASE Quick reference).<br>
+New: word chars now include '@' symbol.<br>
+New: Installation created.<br>
+<li><b>2005-09-30</b><br>
+New: continue with connection if database not found.<br>
+New: Comment/Uncomment selected block.<br>
+New: some context menu items moved to <i>stubs.sql</i> and <i>ustubs.sql</i> files. Now you can add your custom items into <i>ustubs.sql</i><br>
+Example:
+<pre>
+--&lt;Menu\Column information&gt;--
+--EX: U,P
+exec col '%PARM:Object name%'</pre>
+<i>U,P</i> means that this item is valid only for User tables and Stored procedures.<br>
+
+<li><b>2005-09-08</b><br>
+Bug corrected: result set copy bugs corrected.<br>
+<li><b>2005-09-06</b><br>
+New: Copy Headers for result set.<br>
+New: Copy Comma Delimited Data for result set if one column is selected.<br>
+<li><b>2005-08-29</b><br>
+Bug corrected: config search limit ignore.<br>
+Bug corrected: Find/Replace dialogs could be opened at the same time.<br>
+New: New option "Save file on execute".<br>
+New: Delete current line (Ctrl+Y).<br>
+New: Execute current line (Alt+F9).<br>
+<li><b>2005-07-25</b><br>
+Bug corrected: No cursor hscroll.
+<li><b>2005-07-25</b><br>
+Bug corrected: No browser refresh on database change
+<li><b>2005-07-24</b><br>
+New: Move options into separated dialog. Allow to customize font and colors.<br>
+New: Substitute NULL value with a custom string like "&lt;NULL&gt;".<br>
+New: Resultset column width autosize.<br>
+New: Add current tabpage name into a main window title.<br>
+New: Prompt to save changed object/file.<br>
+New: Separate "Save" and "Save As..." actions for files.<br>
+New: Find/Replace dialog.<br>
+New: File roots in object browser (to be extended in the future).<br>
+New: Select, Insert, Update templates in the table context menu.<br>
+New: Show/Hide Log (Alt+2).<br>
+New: Show/Hide Browser (Alt+3).<br>
+<i>Features not documented in the past:</i><br>
+Resultset: Alt+Left Click on header = Sort (String sort!)<br>
+Resultset: Alt+Left Click on value = Fast filter (keep the rows that contains only clicked value). Escape to reset filter.<br>
+Editor: Alt+Mouse select = Select vertical block<br>
+
+
+<li><b>2005-02-01</b><br>
+Added a check for object edit page (procedure, view, trigger) if it contains "create <b>object</b>" script.<br>
+Bug corrected: if <b>no exec</b> is on, ASE Isql could hang or crash.<br>
+Bug corrected: float datatype supported in resultsets<br>
+New: <b>compute by</b> support<br>
+New: Auto reconnect after suicide process<br>
+
+
+ 
+<li><b>2005-01-27</b><br>
+New command line parameters: -Sserver -Ddatabase -Uuser -Ppassword -Jcharset<br>
+Bug corrected: application crash when rightclick on a resultset when disconnected<br>
+<li><b>2004-12-03</b><br>
+Bug corrected: system error on log double click (if object was selected).
+<li><b>2004-11-15</b><br>
+Triggers are included in the browser as a separate folder (same level as User Tables).<br>
+Views have the "Open View" option, allowing the user to see/modify the SQL that created the view.<br>
+Size of retrieval buffer (maximum data size) = 32767.<br>
+Now supports Sybase 12.5 "long char" data retrieval (if you have 12.5 client installed).<br>
+PowerBuilder 9.0 used to compile this application (for Sybase 12.5 client support).
+<li><b>2004-11-01</b><br>
+Now <i>Line Endings</i> option affect only on file save and on script execution.<br>
+Added information about line endings to the status bar. You can click on it to change.
+<li><b>2004-10-27</b><br>
+Added <i>Line Endings</i> option (Windows/Unix).
+<li><b>2004-10-26</b><br>
+This log was started.
+</ul>
+<hr>
+
+<br>
+
+Created by Dmitry Lukyanov <a href='mailto:dlukyanov@ukr.net'>dlukyanov@ukr.net</a><br>
+<HR>
+
+<CENTER>
+	<A HREF="#TOP">top</A> | 
+	<A HREF="../index.htm">control panel</A>
+</CENTER>
+
+</BODY>
+</HTML>

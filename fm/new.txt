@@ -1,0 +1,29 @@
+What's New ( [+] add new feature; [-] bug removed )
+	1.04
+		+ Command line params:
+			fm.exe 0	:	mute
+			fm.exe 100	:	switch fm to frequency 100
+			if you have something like 
+			"System agent" or Schedule (AT command on NT),
+			You can change fm stations depending on time.
+			if You start first copy of fm.exe with parm,
+			it's normaly starts and selects specified station.
+			The second copy of fm.exe with parm send's message
+			to the first copy to select station and exits.
+	1.03
+		+ Hot keys
+		- inexcusable error while processing
+			"Stations" section with comments
+			or incorrect rows (GPF as result)
+	1.02
+		- Sometimes popup not redrawed when using quickselect
+		- You can start more then 1 copy of fm
+	1.01
+		+ Right click on station selects it without
+			removing popup menu (quickselect)
+		+ Stations section in "fm.ini" has a new format:
+			frequensy=station name
+			;the next row displayed as separator in menu
+			-
+	1.00
+		+ Fm designed & created by LDU

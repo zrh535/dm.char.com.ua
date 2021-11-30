@@ -1,0 +1,84 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+   <META NAME="GENERATOR" CONTENT="Dmitry Lukyanov">
+   <META NAME="Author" CONTENT="Dmitry Lukyanov">
+   <META NAME="description" CONTENT="fm radio for creative vibra soundcards">
+   <META NAME="keywords" CONTENT="fm radio creative vibra soundcards sf16 fmi fmd2 fmr fmp">
+   <TITLE>fm radio for creative vibra soundcards</TITLE>
+</HEAD>
+<BODY BGCOLOR="#f6f5e3" TEXT="#000000" LINK="#0000FF" ALINK="#008000" VLINK="Teal">
+
+<CENTER><B><FONT SIZE=+1>Часто задаваемые вопросы</FONT></B></CENTER>
+
+<TABLE BORDER="0" CELLSPACING="2" CELLPADDING="0" WIDTH="95%" BGCOLOR="Silver" BORDERCOLOR="Silver">
+  <TR><TD BGCOLOR="Navy">
+	<FONT SIZE=-1 Color="White"><B>&nbsp;Часто задаваемые вопросы</B></FONT>
+  </TD></TR>
+  <TR><TD BGCOLOR="White">
+	<UL COMPACT>
+	<LI><FONT SIZE=-1 Color="GREEN"><B>Вопрос</B></FONT>
+	</UL>
+	Ответ
+  </TD></TR>
+  <TR><TD BGCOLOR="White">
+	<UL COMPACT>
+	<LI><FONT SIZE=-1 Color="GREEN"><B>Не могу установить fm карточку под windows NT</B></FONT>
+	</UL>
+	Привожу отрывки:<BR>
+	напиши в доке, что надо IRQ 9 (или то, на котором FM висит) для НТ в биосе поставить на Legacy ISA, не в коем случае не P&P. Иначе совсем не работает.. :(( Вот над чем  я бился..
+	Да, еще. Радио не будет работать под НТ, если в биосе стоит "PnP OS installed"=Yes. Нужно ставить No
+  </TD></TR>
+  <TR><TD BGCOLOR="White">
+	<UL COMPACT>
+	<LI><FONT SIZE=-1 Color="GREEN"><B>возникла некая проблема с установкой ее на просто тюнер фирмы MEDIA FORTE SF16-FMR2-02. Правда после переписки DLL, вроде как бы заработала но криво, то звук тихий, то громко, то вообще нет или только на одну колонку.</B></FONT>
+	</UL>
+	Интерфейс DLL для новых карточек постоянно меняется. Поскольку никакой документации не поставляется, и всех новых fm карточек у меня нет, а информацию об интерфейсе DLL я получил только с помощью дебагера (SoftICE), то я просто не имею возможности отслеживать все нововведения (нет спонсоров:)
+  </TD></TR>
+  <TR><TD BGCOLOR="White">
+	<UL COMPACT>
+	<LI><FONT SIZE=-1 Color="GREEN"><B>программа не работает с Windows 2000 выдает - failed to open FM radio device.</B></FONT>
+	</UL>
+	Всегда находятся люди готовые поделиться своими знаниями. И Вот Их имена: <a href="http://i.am/sanych"> Alexander AKA Sanych</a><br>
+	- карточку SF16-FMI прикрутить под Win2000 на большинстве материнских
+	плат невозможно, т.к. 9 прерывание используется ACPI, и переместить
+	его на другое IRQ не получается. А карточка, похоже, ни на чем другом,
+	кроме IRQ9 не работает.<br>
+	- Установка FMR2 - нужно скачать свежие драйвера, они есть на сайте
+	<a href="http://www.mediaforte.com.sg">http://www.mediaforte.com.sg</a><br>
+	-  FMR (старую версию на ISA) можно поставить следующим образом:<br>
+	поставить драйвера от FMR2. Поставить драйвера для FMR (WINNT 4). Если
+	в каталоге winnt\system32\drivers нет файла radioio.sys, то вам не
+	повезло. поставьте драйвера от FMR на любую NT4 и возьмите оттуда
+	файлы radioio.sys и RadioCpl.cpl и поместите из в system32\drivers и
+	\system32 соответственно на своем W2K-компутере.
+	 Переименуйте radioio.sys в RadISANT.sys (поверх существующего). При
+	 этом сервис RadISANT должен быть остановлен. Из Control Panel
+	 настройте параметры карточки -адрес <b>384</b>. Все. После перезагрузки ваша
+	 плитка должна заработать.
+
+  </TD></TR>
+  <TR>
+	<TD BGCOLOR="Silver" ALIGN=RIGHT>		
+		<FONT SIZE=-1>
+		<SCRIPT LANGUAGE="JavaScript">
+		<!--
+			document.write("Last Modified "+document.lastModified);
+		// -->
+		</SCRIPT>
+		</FONT>
+	</TD>
+  </TR>
+</table>
+
+
+<HR>
+
+<CENTER>
+	<A HREF="#TOP">top</A> | 
+	<A HREF="fm.htm">fm</A> | 
+	<A HREF="../index.htm">control panel</A>
+</CENTER>
+
+</BODY>
+</HTML>

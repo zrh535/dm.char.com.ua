@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1251">
+   <META NAME="Author" CONTENT="Dmitry Lukyanov">
+   <META NAME="description" CONTENT="ase dump to sql; convert database to sql; ase2sql; asedump">
+   <META NAME="keywords" CONTENT="ase dump sql convert database ase2sql asedump unload">
+   <TITLE>ASEDUMP: Sybase ASE database to sql converter</TITLE>
+</HEAD>
+<BODY BGCOLOR="#f6f5e3" TEXT="#000000" LINK="Blue" ALINK="Red" VLINK="Teal">
+
+<IMG ALIGN="Left" SRC="../images/hacker.gif" BORDER=0>
+
+<CENTER><B><FONT SIZE=+1>ASEDUMP: Sybase ASE database to sql converter</FONT></B></CENTER>
+
+<hr>
+
+The Idea: I want to unload database to sql file(s) and to recreate it on another platform (even server type).<br>
+Of cause you can use big, expensive tools like CAST etc., but you can't manage the process.<br>
+<br>
+This tool is simple to understand, extendable (you need to know T-SQL and windows command batch).<br>
+The most important thing: it's free.<br>
+<hr>
+<b>Description:</b><br>
+I have created a simple tool <b>cisql</b>. It's like usual isql, but it can produce results without extra information.<br>
+So all logic is implemented in SQL and CMD files.<br>
+Only following db constraints are supported for now:<br>
+- Defaults<br>
+- User types<br>
+- Tables<br>
+- Views<br>
+- Foreign keys<br>
+- Procedures<br>
+- Data<br>
+<br>
+You can write and send me scripts for triggers, etc.<br>
+You can do what you want on your own risk.<br>
+
+<B>Version 2008-01-02 Download :</B> <a href="asedump.zip">asedump</a>
+
+<hr>
+
+
+
+<p>
+Copyright by Dmitry Lukyanov
+<HR>
+
+<CENTER>
+	<A HREF="#TOP">top</A> | 
+	<A HREF="../index.htm">control panel</A>
+</CENTER>
+
+</BODY>
+</HTML>
